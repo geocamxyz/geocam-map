@@ -1,0 +1,15 @@
+{
+  "name": "geocam-map",
+  "private": true,
+  "version": "2.0.1",
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^4.0.4"
+  },
+  "dependencies": {
+    "esri-loader": "^3.7.0"
+  }
+}
