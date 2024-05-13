@@ -10,7 +10,7 @@ export class GeocamMap extends HTMLElement {
   connectedCallback() {
     console.log("Map connected");
     const node = this;
-    const webmapid = node.getAttribute("data-webmapid");
+    const webmapid = node.getAttribute("webmapid");
     map(node, webmapid);
   }
 
