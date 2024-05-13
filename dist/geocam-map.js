@@ -292,7 +292,7 @@ class ee extends HTMLElement {
   }
   connectedCallback() {
     console.log("Map connected");
-    const t = this, o = t.getAttribute("data-webmapid");
+    const t = this, o = t.getAttribute("webmapid");
     _(t, o);
   }
   disconnectedCallback() {
