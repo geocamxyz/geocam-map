@@ -176,6 +176,7 @@ export async function map(node, webmapid) {
     };
 
     view.when(async () => {
+      window.mv = view;
       let allLayers = [];
       let hasEditableLayers = false;
       const layers = ungroupLayers(view.map);
