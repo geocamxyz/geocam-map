@@ -1,5 +1,5 @@
 # Geocam Map
-Geocam map web component - convenience component for loading and arcgis map which can be connected to [geocamxyz/geocam-viewer](https://github.com/geocamxyz/geocam-vewier) web component via the - [geocamxyz/connector-arcgis-map](https://github.com/geocamxyz/connector-arcgis-map) web component
+Geocam map web component - convenience component for loading an arcgis map which can be connected to [geocamxyz/geocam-viewer](https://github.com/geocamxyz/geocam-vewier) web component via the - [geocamxyz/connector-arcgis-map](https://github.com/geocamxyz/connector-arcgis-map) web component
 
 ### NPM Installation:
 ```
