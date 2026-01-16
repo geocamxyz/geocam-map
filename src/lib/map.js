@@ -38,6 +38,25 @@ export async function map(node, webmapid) {
         },
       },
     },
+    {
+      name: "AreaMeasurement2D",
+      icon: "esri-icon-measure-area",
+      watchExpandFor: {
+        expanded: (nV, oV, expProp, expObj) => {
+          expObj.content.viewModel.clear();
+        },
+      },
+      watchWidgetFor: {
+        "viewModel.state": (nV, oV, expProp, expObj) => {
+          if (nV === "measuring") {
+            expObj.view.emit("clickable", false);
+          } else if (nV !== "measuring" && oV === "measuring") {
+            expObj.view.emit("clickable", true);
+          }
+          console.log("viewmodel state change", nV, expObj);
+        },
+      },
+    },
   ];
 
   const widgetList = widgets
