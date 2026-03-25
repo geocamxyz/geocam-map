@@ -1,8 +1,8 @@
 var j = typeof window < "u";
-const $ = {
+const R = {
   Promise: j ? window.Promise : void 0
 };
-var G = "4.25", M = "next";
+var $ = "4.25", M = "next";
 function N(e) {
   if (e.toLowerCase() === M)
     return M;
@@ -13,10 +13,10 @@ function N(e) {
   };
 }
 function B(e) {
-  return e === void 0 && (e = G), "https://js.arcgis.com/".concat(e, "/");
+  return e === void 0 && (e = $), "https://js.arcgis.com/".concat(e, "/");
 }
 function z(e) {
-  e === void 0 && (e = G);
+  e === void 0 && (e = $);
   var t = B(e), r = N(e);
   if (r !== M && r.major === 3) {
     var n = r.minor <= 10 ? "js/" : "";
@@ -67,7 +67,7 @@ function _(e, t) {
 function D() {
   return document.querySelector("script[data-esri-loader]");
 }
-function P() {
+function T() {
   var e = window.require;
   return e && e.on;
 }
@@ -79,18 +79,18 @@ function Q(e) {
       Object.prototype.hasOwnProperty.call(i, o) && (t[o] = i[o]);
   });
   var r = t.version, n = t.url || B(r);
-  return new $.Promise(function(i, o) {
+  return new R.Promise(function(i, o) {
     var d = D();
     if (d) {
       var E = d.getAttribute("src");
-      E !== n ? o(new Error("The ArcGIS API for JavaScript is already loaded (".concat(E, ")."))) : P() ? i(d) : q(d, i, o);
-    } else if (P())
+      E !== n ? o(new Error("The ArcGIS API for JavaScript is already loaded (".concat(E, ")."))) : T() ? i(d) : q(d, i, o);
+    } else if (T())
       o(new Error("The ArcGIS API for JavaScript is already loaded."));
     else {
       var s = t.css;
       if (s) {
-        var p = s === !0;
-        O(p ? r : s, t.insertCssBefore);
+        var f = s === !0;
+        O(f ? r : s, t.insertCssBefore);
       }
       d = Z(n), q(d, function() {
         d.setAttribute("data-esri-loader", "loaded"), i(d);
@@ -98,8 +98,8 @@ function Q(e) {
     }
   });
 }
-function R(e) {
-  return new $.Promise(function(t, r) {
+function G(e) {
+  return new R.Promise(function(t, r) {
     var n = window.require.on("error", r);
     window.require(e, function() {
       for (var i = [], o = 0; o < arguments.length; o++)
@@ -109,11 +109,11 @@ function R(e) {
   });
 }
 function Y(e, t) {
-  if (t === void 0 && (t = {}), P())
-    return R(e);
+  if (t === void 0 && (t = {}), T())
+    return G(e);
   var r = D(), n = r && r.getAttribute("src");
   return !t.url && n && (t.url = n), Q(t).then(function() {
-    return R(e);
+    return G(e);
   });
 }
 async function ee(e, t) {
@@ -126,23 +126,25 @@ async function ee(e, t) {
     {
       name: "Search",
       icon: "esri-icon-search",
-      options: { includeDefaultSources: !0 }
+      options: { includeDefaultSources: !0 },
+      tooltip: "Search"
     },
-    { name: "BasemapGallery", icon: "esri-icon-basemap" },
-    { name: "LayerList", icon: "esri-icon-layer-list" },
-    { name: "Legend", icon: "esri-icon-feature-layer" },
-    { name: "Editor", icon: "esri-icon-edit" },
+    { name: "BasemapGallery", icon: "esri-icon-basemap", tooltip: "Basemap Gallery" },
+    { name: "LayerList", icon: "esri-icon-layer-list", tooltip: "Layer List" },
+    { name: "Legend", icon: "esri-icon-feature-layer", tooltip: "Legend" },
+    { name: "Editor", icon: "esri-icon-edit", tooltip: "Editor" },
     {
       name: "DistanceMeasurement2D",
       icon: "esri-icon-measure",
+      tooltip: "Distance Measurement",
       watchExpandFor: {
-        expanded: (s, p, S, w) => {
+        expanded: (s, f, S, w) => {
           w.content.viewModel.clear();
         }
       },
       watchWidgetFor: {
-        "viewModel.state": (s, p, S, w) => {
-          s === "measuring" ? w.view.emit("clickable", !1) : s !== "measuring" && p === "measuring" && w.view.emit("clickable", !0), console.log("viewmodel state change", s, w);
+        "viewModel.state": (s, f, S, w) => {
+          s === "measuring" ? w.view.emit("clickable", !1) : s !== "measuring" && f === "measuring" && w.view.emit("clickable", !0), console.log("viewmodel state change", s, w);
         }
       }
     }
@@ -159,10 +161,10 @@ async function ee(e, t) {
   ).then(
     ([
       s,
-      p,
+      f,
       S,
       w,
-      T,
+      P,
       ...W
     ]) => {
       window.ARCGIS_TOKEN && s.registerToken({
@@ -178,28 +180,28 @@ async function ee(e, t) {
         if (b.startsWith("http")) {
           const l = b.split("/");
           c.id = l.pop();
-          const f = l.join("/"), m = new Portal({
-            url: f
+          const p = l.join("/"), m = new Portal({
+            url: p
           });
           c.portal = m;
         }
-        v = new p({
+        v = new f({
           portalItem: c
         });
       } else
-        v = new p({
+        v = new f({
           basemap: "satellite"
         });
       if (C) {
         const c = `${document.location.protocol}//${document.location.host.startsWith("localhost") ? "localhost:3092" : document.location.host}/arcgis/rest/services/${C}/FeatureServer/0`;
-        console.log("shots url is", c), x = new T({
+        console.log("shots url is", c), x = new P({
           url: c,
           definitionExpression: "mod(id,100) = 0"
           // start with agressive simplifaction - view should get scale change early on to override this
         }), v.add(x);
         const l = `${document.location.protocol}//${document.location.host.startsWith("localhost") ? "localhost:3092" : document.location.host}/arcgis/rest/services/${C}/FeatureServer/1`;
         console.log("points features url is", l);
-        const f = new T({
+        const p = new P({
           url: l,
           popupEnabled: !0,
           popupTemplate: {
@@ -217,7 +219,7 @@ async function ee(e, t) {
             ]
           }
         });
-        v.add(f);
+        v.add(p);
       }
       k.get("zoom") || x && x.when((c) => {
         const l = {
@@ -225,9 +227,9 @@ async function ee(e, t) {
           ymin: -5e-3,
           xmax: 5e-3,
           ymax: 5e-3
-        }, f = Object.keys(l), m = {};
-        for (let u = 0; u < f.length; u++)
-          m[f[u]] = parseFloat(c.fullExtent[f[u]]) + l[f[u]];
+        }, p = Object.keys(l), m = {};
+        for (let u = 0; u < p.length; u++)
+          m[p[u]] = parseFloat(c.fullExtent[p[u]]) + l[p[u]];
         n.extent = m;
       }), v.load().then(() => {
         n = new S({
@@ -243,13 +245,13 @@ async function ee(e, t) {
         c && c.link && (console.log("map linking to connector", n), c.link(n));
         const l = function(m) {
           return m.layers.items.map((u) => u.layers ? l(u) : u);
-        }, f = function(m) {
+        }, p = function(m) {
           return l(m).flat();
         };
         n.when(async () => {
           window.mv = n;
           let m = [], u = !1;
-          const U = f(n.map);
+          const U = p(n.map);
           for (let g = 0; g < U.length; g++) {
             const a = U[g];
             if (await n.whenLayerView(a), a.editingEnabled && (u = !0), a.fields) {
@@ -283,7 +285,8 @@ async function ee(e, t) {
               group: "expands",
               autoCollapse: !0,
               content: h,
-              expandIconClass: o[a].icon
+              expandIconClass: o[a].icon,
+              expandTooltip: o[a].tooltip
             });
             o[a].watchWidgetFor && Object.keys(o[a].watchWidgetFor).forEach((L) => {
               h.watch(
