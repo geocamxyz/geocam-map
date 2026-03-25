@@ -14,14 +14,16 @@ export async function map(node, webmapid) {
       name: "Search",
       icon: "esri-icon-search",
       options: { includeDefaultSources: true },
+      tooltip: "Search",
     },
-    { name: "BasemapGallery", icon: "esri-icon-basemap" },
-    { name: "LayerList", icon: "esri-icon-layer-list" },
-    { name: "Legend", icon: "esri-icon-feature-layer" },
-    { name: "Editor", icon: "esri-icon-edit" },
+    { name: "BasemapGallery", icon: "esri-icon-basemap", tooltip: "Basemap Gallery" },
+    { name: "LayerList", icon: "esri-icon-layer-list", tooltip: "Layer List" },
+    { name: "Legend", icon: "esri-icon-feature-layer", tooltip: "Legend" },
+    { name: "Editor", icon: "esri-icon-edit", tooltip: "Editor" },
     {
       name: "DistanceMeasurement2D",
       icon: "esri-icon-measure",
+      tooltip: "Distance Measurement",
       watchExpandFor: {
         expanded: (nV, oV, expProp, expObj) => {
           expObj.content.viewModel.clear();
@@ -242,6 +244,7 @@ export async function map(node, webmapid) {
               autoCollapse: true,
               content: widget,
               expandIconClass: expands[i].icon,
+               expandTooltip: expands[i].tooltip,
             });
             if (expands[i].watchWidgetFor) {
               Object.keys(expands[i].watchWidgetFor).forEach((prop) => {
