@@ -241,7 +241,13 @@ export async function map(node, webmapid) {
             const expand = new Expand({
               view: view,
               group: "expands",
-              autoCollapse: true,
+              // autoCollapse closes the panel whenever the viewpoint updates,
+              // which assumes the only thing that moves the map is the user.
+              // This map moves itself — the field-of-view marker tracks the
+              // current shot — so a panel could be shut while you are working
+              // in it. `group` still keeps only one open at a time, which is
+              // the part that was actually wanted.
+              autoCollapse: false,
               content: widget,
               expandIconClass: expands[i].icon,
                expandTooltip: expands[i].tooltip,

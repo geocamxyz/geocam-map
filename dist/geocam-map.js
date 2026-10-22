@@ -283,7 +283,13 @@ async function ee(e, t) {
             const I = new w({
               view: n,
               group: "expands",
-              autoCollapse: !0,
+              // autoCollapse closes the panel whenever the viewpoint updates,
+              // which assumes the only thing that moves the map is the user.
+              // This map moves itself — the field-of-view marker tracks the
+              // current shot — so a panel could be shut while you are working
+              // in it. `group` still keeps only one open at a time, which is
+              // the part that was actually wanted.
+              autoCollapse: !1,
               content: h,
               expandIconClass: o[a].icon,
               expandTooltip: o[a].tooltip
