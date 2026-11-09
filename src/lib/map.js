@@ -56,6 +56,7 @@ export async function map(node, webmapid) {
       "esri/views/MapView",
       "esri/widgets/Expand",
       "esri/layers/FeatureLayer",
+      "esri/portal/Portal",
     ]
       .concat(widgetList)
       .concat(expandList),
@@ -67,6 +68,7 @@ export async function map(node, webmapid) {
       MapView,
       Expand,
       FeatureLayer,
+      Portal,
       ...widgetArray
     ]) => {
       if (window.ARCGIS_TOKEN) {
