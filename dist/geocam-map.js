@@ -1,128 +1,128 @@
-var z = typeof window < "u";
-const R = {
-  Promise: z ? window.Promise : void 0
+var O = typeof window < "u";
+const B = {
+  Promise: O ? window.Promise : void 0
 };
-var $ = "4.25", M = "next";
-function N(e) {
-  if (e.toLowerCase() === M)
-    return M;
+var D = "4.25", T = "next";
+function z(e) {
+  if (e.toLowerCase() === T)
+    return T;
   var t = e && e.match(/^(\d)\.(\d+)/);
   return t && {
     major: parseInt(t[1], 10),
     minor: parseInt(t[2], 10)
   };
 }
-function B(e) {
-  return e === void 0 && (e = $), "https://js.arcgis.com/".concat(e, "/");
+function j(e) {
+  return e === void 0 && (e = D), "https://js.arcgis.com/".concat(e, "/");
 }
-function V(e) {
-  e === void 0 && (e = $);
-  var t = B(e), a = N(e);
-  if (a !== M && a.major === 3) {
-    var n = a.minor <= 10 ? "js/" : "";
+function _(e) {
+  e === void 0 && (e = D);
+  var t = j(e), o = z(e);
+  if (o !== T && o.major === 3) {
+    var n = o.minor <= 10 ? "js/" : "";
     return "".concat(t).concat(n, "esri/css/esri.css");
   } else
     return "".concat(t, "esri/themes/light/main.css");
 }
-function H(e) {
+function X(e) {
   var t = document.createElement("link");
   return t.rel = "stylesheet", t.href = e, t;
 }
-function J(e, t) {
+function Z(e, t) {
   if (t) {
-    var a = document.querySelector(t);
-    a.parentNode.insertBefore(e, a);
+    var o = document.querySelector(t);
+    o.parentNode.insertBefore(e, o);
   } else
     document.head.appendChild(e);
 }
-function K(e) {
+function Q(e) {
   return document.querySelector('link[href*="'.concat(e, '"]'));
 }
-function O(e) {
-  return !e || N(e) ? V(e) : e;
+function Y(e) {
+  return !e || z(e) ? _(e) : e;
 }
-function X(e, t) {
-  var a = O(e), n = K(a);
-  return n || (n = H(a), J(n, t)), n;
+function ee(e, t) {
+  var o = Y(e), n = Q(o);
+  return n || (n = X(o), Z(n, t)), n;
 }
-var Z = {};
-function _(e) {
+var te = {};
+function ne(e) {
   var t = document.createElement("script");
   return t.type = "text/javascript", t.src = e, t.setAttribute("data-esri-loader", "loading"), t;
 }
-function q(e, t, a) {
+function R(e, t, o) {
   var n;
-  a && (n = Q(e, a));
-  var c = function() {
-    t(e), e.removeEventListener("load", c, !1), n && e.removeEventListener("error", n, !1);
+  o && (n = oe(e, o));
+  var p = function() {
+    t(e), e.removeEventListener("load", p, !1), n && e.removeEventListener("error", n, !1);
   };
-  e.addEventListener("load", c, !1);
+  e.addEventListener("load", p, !1);
 }
-function Q(e, t) {
-  var a = function(n) {
-    t(n.error || new Error("There was an error attempting to load ".concat(e.src))), e.removeEventListener("error", a, !1);
+function oe(e, t) {
+  var o = function(n) {
+    t(n.error || new Error("There was an error attempting to load ".concat(e.src))), e.removeEventListener("error", o, !1);
   };
-  return e.addEventListener("error", a, !1), a;
+  return e.addEventListener("error", o, !1), o;
 }
-function D() {
+function V() {
   return document.querySelector("script[data-esri-loader]");
 }
-function T() {
+function W() {
   var e = window.require;
   return e && e.on;
 }
-function Y(e) {
+function ae(e) {
   e === void 0 && (e = {});
   var t = {};
-  [Z, e].forEach(function(c) {
-    for (var o in c)
-      Object.prototype.hasOwnProperty.call(c, o) && (t[o] = c[o]);
+  [te, e].forEach(function(p) {
+    for (var d in p)
+      Object.prototype.hasOwnProperty.call(p, d) && (t[d] = p[d]);
   });
-  var a = t.version, n = t.url || B(a);
-  return new R.Promise(function(c, o) {
-    var u = D();
-    if (u) {
-      var E = u.getAttribute("src");
-      E !== n ? o(new Error("The ArcGIS API for JavaScript is already loaded (".concat(E, ")."))) : T() ? c(u) : q(u, c, o);
-    } else if (T())
-      o(new Error("The ArcGIS API for JavaScript is already loaded."));
+  var o = t.version, n = t.url || j(o);
+  return new B.Promise(function(p, d) {
+    var a = V();
+    if (a) {
+      var y = a.getAttribute("src");
+      y !== n ? d(new Error("The ArcGIS API for JavaScript is already loaded (".concat(y, ")."))) : W() ? p(a) : R(a, p, d);
+    } else if (W())
+      d(new Error("The ArcGIS API for JavaScript is already loaded."));
     else {
-      var i = t.css;
-      if (i) {
-        var f = i === !0;
-        X(f ? a : i, t.insertCssBefore);
+      var E = t.css;
+      if (E) {
+        var u = E === !0;
+        ee(u ? o : E, t.insertCssBefore);
       }
-      u = _(n), q(u, function() {
-        u.setAttribute("data-esri-loader", "loaded"), c(u);
-      }, o), document.body.appendChild(u);
+      a = ne(n), R(a, function() {
+        a.setAttribute("data-esri-loader", "loaded"), p(a);
+      }, d), document.body.appendChild(a);
     }
   });
 }
-function G(e) {
-  return new R.Promise(function(t, a) {
-    var n = window.require.on("error", a);
+function $(e) {
+  return new B.Promise(function(t, o) {
+    var n = window.require.on("error", o);
     window.require(e, function() {
-      for (var c = [], o = 0; o < arguments.length; o++)
-        c[o] = arguments[o];
-      n.remove(), t(c);
+      for (var p = [], d = 0; d < arguments.length; d++)
+        p[d] = arguments[d];
+      n.remove(), t(p);
     });
   });
 }
-function ee(e, t) {
-  if (t === void 0 && (t = {}), T())
-    return G(e);
-  var a = D(), n = a && a.getAttribute("src");
-  return !t.url && n && (t.url = n), Y(t).then(function() {
-    return G(e);
+function re(e, t) {
+  if (t === void 0 && (t = {}), W())
+    return $(e);
+  var o = V(), n = o && o.getAttribute("src");
+  return !t.url && n && (t.url = n), ae(t).then(function() {
+    return $(e);
   });
 }
-async function te(e, t) {
-  const a = {
+async function se(e, t) {
+  const o = {
     version: "4.26",
     css: !0
   };
   let n;
-  const c = [{ name: "Zoom" }], o = [
+  const p = 2, d = [{ name: "Zoom" }], a = [
     {
       name: "Search",
       icon: "esri-icon-search",
@@ -138,73 +138,77 @@ async function te(e, t) {
       icon: "esri-icon-measure",
       tooltip: "Distance Measurement",
       watchExpandFor: {
-        expanded: (i, f, S, w) => {
+        expanded: (u, L, C, w) => {
           w.content.viewModel.clear();
         }
       },
       watchWidgetFor: {
-        "viewModel.state": (i, f, S, w) => {
-          i === "measuring" ? w.view.emit("clickable", !1) : i !== "measuring" && f === "measuring" && w.view.emit("clickable", !0), console.log("viewmodel state change", i, w);
+        "viewModel.state": (u, L, C, w) => {
+          u === "measuring" ? w.view.emit("clickable", !1) : u !== "measuring" && L === "measuring" && w.view.emit("clickable", !0), console.log("viewmodel state change", u, w);
         }
       }
     }
-  ], u = c ? c.map((i) => i.class ? i.class : `esri/widgets/${i.name}`) : [], E = o ? o.map((i) => i.class ? i.class : `esri/widgets/${i.name}`) : [];
-  return await ee(
+  ], y = d ? d.map((u) => u.class ? u.class : `esri/widgets/${u.name}`) : [], E = a ? a.map((u) => u.class ? u.class : `esri/widgets/${u.name}`) : [];
+  return await re(
     [
       "esri/identity/IdentityManager",
       "esri/WebMap",
       "esri/views/MapView",
       "esri/widgets/Expand",
       "esri/layers/FeatureLayer",
-      "esri/portal/Portal"
-    ].concat(u).concat(E),
-    a
+      "esri/portal/Portal",
+      "esri/layers/support/LOD",
+      "esri/core/reactiveUtils"
+    ].concat(y).concat(E),
+    o
   ).then(
     ([
-      i,
-      f,
-      S,
+      u,
+      L,
+      C,
       w,
-      P,
-      j,
-      ...W
+      U,
+      H,
+      J,
+      K,
+      ...q
     ]) => {
-      window.ARCGIS_TOKEN && i.registerToken({
+      window.ARCGIS_TOKEN && u.registerToken({
         server: window.ARCGIS_SERVER,
         token: window.ARCGIS_TOKEN
       });
-      const k = new URLSearchParams(window.location.search), C = k.get("cell"), b = t || k.get("webmapid");
-      let v, x;
-      if (b) {
-        const s = {
-          id: b
+      const k = new URLSearchParams(window.location.search), A = k.get("cell"), S = t || k.get("webmapid");
+      let h, I;
+      if (S) {
+        const r = {
+          id: S
         };
-        if (b.startsWith("http")) {
-          const l = b.split("/");
-          s.id = l.pop();
-          const m = l.join("/"), d = new j({
-            url: m
+        if (S.startsWith("http")) {
+          const c = S.split("/");
+          r.id = c.pop();
+          const l = c.join("/"), f = new H({
+            url: l
           });
-          s.portal = d;
+          r.portal = f;
         }
-        v = new f({
-          portalItem: s
+        h = new L({
+          portalItem: r
         });
       } else
-        v = new f({
+        h = new L({
           basemap: "satellite"
         });
-      if (C) {
-        const s = `${document.location.protocol}//${document.location.host.startsWith("localhost") ? "localhost:3092" : document.location.host}/arcgis/rest/services/${C}/FeatureServer/0`;
-        console.log("shots url is", s), x = new P({
-          url: s,
+      if (A) {
+        const r = `${document.location.protocol}//${document.location.host.startsWith("localhost") ? "localhost:3092" : document.location.host}/arcgis/rest/services/${A}/FeatureServer/0`;
+        console.log("shots url is", r), I = new U({
+          url: r,
           definitionExpression: "mod(id,100) = 0"
           // start with agressive simplifaction - view should get scale change early on to override this
-        }), v.add(x);
-        const l = `${document.location.protocol}//${document.location.host.startsWith("localhost") ? "localhost:3092" : document.location.host}/arcgis/rest/services/${C}/FeatureServer/1`;
-        console.log("points features url is", l);
-        const m = new P({
-          url: l,
+        }), h.add(I);
+        const c = `${document.location.protocol}//${document.location.host.startsWith("localhost") ? "localhost:3092" : document.location.host}/arcgis/rest/services/${A}/FeatureServer/1`;
+        console.log("points features url is", c);
+        const l = new U({
+          url: c,
           popupEnabled: !0,
           popupTemplate: {
             title: "{reference}",
@@ -221,69 +225,103 @@ async function te(e, t) {
             ]
           }
         });
-        v.add(m);
+        h.add(l);
       }
-      k.get("zoom") || x && x.when((s) => {
-        const l = {
+      k.get("zoom") || I && I.when((r) => {
+        const c = {
           xmin: -5e-3,
           ymin: -5e-3,
           xmax: 5e-3,
           ymax: 5e-3
-        }, m = Object.keys(l), d = {};
-        for (let p = 0; p < m.length; p++)
-          d[m[p]] = parseFloat(s.fullExtent[m[p]]) + l[m[p]];
-        n.extent = d;
-      }), v.load().then(() => {
-        n = new S({
+        }, l = Object.keys(c), f = {};
+        for (let i = 0; i < l.length; i++)
+          f[l[i]] = parseFloat(r.fullExtent[l[i]]) + c[l[i]];
+        n.extent = f;
+      });
+      const G = async (r) => {
+        try {
+          if (!r)
+            return null;
+          await r.load();
+          const c = r.baseLayers.toArray();
+          await Promise.all(c.map((m) => m.load().catch(() => null)));
+          const l = c.find(
+            (m) => m.tileInfo && m.tileInfo.lods && m.tileInfo.lods.length
+          );
+          if (!l)
+            return null;
+          const f = l.tileInfo.lods.map((m) => m.clone());
+          let i = f[f.length - 1];
+          for (; i.scale / 2 >= p; )
+            i = new J({
+              level: i.level + 1,
+              scale: i.scale / 2,
+              resolution: i.resolution / 2
+            }), f.push(i);
+          return f.length > l.tileInfo.lods.length ? f : null;
+        } catch (c) {
+          return console.warn("Could not extend basemap zoom levels", c), null;
+        }
+      };
+      h.load().then(async () => {
+        const r = await G(h.basemap);
+        n = new C({
           container: e,
-          map: v,
+          map: h,
+          ...r ? { constraints: { lods: r } } : {},
           ui: {
             components: ["attribution"]
           }
-        });
-        const s = document.getElementsByTagName(
+        }), K.watch(
+          () => n.map && n.map.basemap,
+          async (i) => {
+            const m = await G(i);
+            n.map && n.map.basemap === i && (n.constraints.lods = m);
+          }
+        );
+        const c = document.getElementsByTagName(
           "geocam-viewer-arcgis-map"
         )[0];
-        s && s.link && (console.log("map linking to connector", n), s.link(n));
-        const l = function(d) {
-          return d.layers.items.map((p) => p.layers ? l(p) : p);
-        }, m = function(d) {
-          return l(d).flat();
+        c && c.link && (console.log("map linking to connector", n), c.link(n));
+        const l = function(i) {
+          return i.layers.items.map((m) => m.layers ? l(m) : m);
+        }, f = function(i) {
+          return l(i).flat();
         };
         n.when(async () => {
           window.mv = n;
-          let d = [], p = !1;
-          const U = m(n.map);
-          for (let g = 0; g < U.length; g++) {
-            const r = U[g];
-            if (await n.whenLayerView(r), r.editingEnabled && (p = !0), r.fields) {
-              const y = r.fields.map((h) => h.name);
-              d.push({ layer: r, searchFields: y });
+          let i = [], m = !1;
+          const N = f(n.map);
+          for (let g = 0; g < N.length; g++) {
+            const s = N[g];
+            if (await n.whenLayerView(s), s.editingEnabled && (m = !0), s.fields) {
+              const b = s.fields.map((v) => v.name);
+              i.push({ layer: s, searchFields: b });
             }
           }
           const F = [];
-          u.forEach((g, r) => {
-            const y = W[r], h = new y({
+          y.forEach((g, s) => {
+            const b = q[s], v = new b({
               view: n,
               container: document.createElement("div"),
-              ...c[r].options
+              ...d[s].options
             });
-            F.push(h);
-          }), E.forEach((g, r) => {
-            if (g === "esri/widgets/Editor" && !p)
+            F.push(v);
+          }), E.forEach((g, s) => {
+            if (g === "esri/widgets/Editor" && !m)
               return;
-            g === "esri/widgets/Search" && (o[r].options = o[r].options || {}, o[r].options.sources = o[r].options.sources || d);
-            const y = W[r + u.length], h = new y({
+            g === "esri/widgets/Search" && (a[s].options = a[s].options || {}, a[s].options.sources = a[s].options.sources || i);
+            const b = q[s + y.length], v = new b({
               view: n,
               container: document.createElement("div"),
-              ...o[r].options
+              ...a[s].options
             });
             console.log("loaded widget", {
               view: n,
               container: document.createElement("div"),
-              ...o[r].options
+              ...a[s].options
             });
-            const I = new w({
+            const M = new w({
               view: n,
               group: "expands",
               // autoCollapse closes the panel whenever the viewpoint updates,
@@ -293,46 +331,46 @@ async function te(e, t) {
               // in it. `group` still keeps only one open at a time, which is
               // the part that was actually wanted.
               autoCollapse: !1,
-              content: h,
-              expandIconClass: o[r].icon,
-              expandTooltip: o[r].tooltip
+              content: v,
+              expandIconClass: a[s].icon,
+              expandTooltip: a[s].tooltip
             });
-            o[r].watchWidgetFor && Object.keys(o[r].watchWidgetFor).forEach((L) => {
-              h.watch(
-                L,
-                (...A) => o[r].watchWidgetFor[L].apply(h, A)
+            a[s].watchWidgetFor && Object.keys(a[s].watchWidgetFor).forEach((x) => {
+              v.watch(
+                x,
+                (...P) => a[s].watchWidgetFor[x].apply(v, P)
               );
-            }), o[r].watchExpandFor && Object.keys(o[r].watchExpandFor).forEach((L) => {
-              I.watch(
-                L,
-                (...A) => o[r].watchExpandFor[L].apply(I, A)
+            }), a[s].watchExpandFor && Object.keys(a[s].watchExpandFor).forEach((x) => {
+              M.watch(
+                x,
+                (...P) => a[s].watchExpandFor[x].apply(M, P)
               );
-            }), F.push(I);
+            }), F.push(M);
           }), n.ui.add(F, "top-right"), console.log("All widgets added");
         });
-      }).catch((s) => {
-        var m, d;
-        const l = s && s.message ? (s == null ? void 0 : s.message) + `
-` + ((d = (m = s == null ? void 0 : s.details) == null ? void 0 : m.error) == null ? void 0 : d.message) : "An unknown erro occurred trying to load the map.";
-        alert(l), console.error("Error loading map:", l);
+      }).catch((r) => {
+        var l, f;
+        const c = r && r.message ? (r == null ? void 0 : r.message) + `
+` + ((f = (l = r == null ? void 0 : r.details) == null ? void 0 : l.error) == null ? void 0 : f.message) : "An unknown erro occurred trying to load the map.";
+        alert(c), console.error("Error loading map:", c);
       });
     }
   ), n;
 }
-class ne extends HTMLElement {
+class ie extends HTMLElement {
   constructor() {
     super(), console.log("Map init");
   }
   connectedCallback() {
     console.log("Map connected");
-    const t = this, a = t.getAttribute("webmapid");
-    te(t, a);
+    const t = this, o = t.getAttribute("webmapid");
+    se(t, o);
   }
   disconnectedCallback() {
     console.log("labe disconnected");
   }
 }
-window.customElements.define("geocam-map", ne);
+window.customElements.define("geocam-map", ie);
 export {
-  ne as GeocamMap
+  ie as GeocamMap
 };
