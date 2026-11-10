@@ -8,6 +8,11 @@ export async function map(node, webmapid) {
 
   let view;
 
+  // Basemap tiles stop at zoom 23 (~1:70), which is where the view stopped too.
+  // Shots inside a manhole or room sit centimetres apart, so allow zooming on
+  // past the tiles (the imagery just upsamples) to pick them apart.
+  const MAX_ZOOM = 28;
+
   const widgets = [{ name: "Zoom" }];
   const expands = [
     {
@@ -57,6 +62,7 @@ export async function map(node, webmapid) {
       "esri/widgets/Expand",
       "esri/layers/FeatureLayer",
       "esri/portal/Portal",
+      "esri/layers/support/TileInfo",
     ]
       .concat(widgetList)
       .concat(expandList),
@@ -69,6 +75,7 @@ export async function map(node, webmapid) {
       Expand,
       FeatureLayer,
       Portal,
+      TileInfo,
       ...widgetArray
     ]) => {
       if (window.ARCGIS_TOKEN) {
@@ -175,6 +182,16 @@ export async function map(node, webmapid) {
           ui: {
             components: ["attribution"],
           },
+        });
+
+        // Only extend Web Mercator views: the generated LODs are Web Mercator
+        // ones, and a web map in another projection keeps its own scheme.
+        view.when(() => {
+          if (view.spatialReference && view.spatialReference.isWebMercator) {
+            view.constraints.lods = TileInfo.create({
+              numLODs: MAX_ZOOM + 1,
+            }).lods;
+          }
         });
 
         const connector = document.getElementsByTagName(
