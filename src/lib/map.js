@@ -8,6 +8,13 @@ export async function map(node, webmapid) {
 
   let view;
 
+  // The view takes its zoom levels from the basemap's tiles, which stop at
+  // ~1:70 for Esri imagery. Shots inside a manhole or a room sit centimetres
+  // apart, so the basemap's own levels are extended by halving the last one
+  // until the scale would drop below this (~1:2, zoom 28 on Web Mercator).
+  // Past the last real level the tiles just upsample.
+  const MIN_SCALE = 2;
+
   const widgets = [{ name: "Zoom" }];
   const expands = [
     {
@@ -56,6 +63,9 @@ export async function map(node, webmapid) {
       "esri/views/MapView",
       "esri/widgets/Expand",
       "esri/layers/FeatureLayer",
+      "esri/portal/Portal",
+      "esri/layers/support/LOD",
+      "esri/core/reactiveUtils",
     ]
       .concat(widgetList)
       .concat(expandList),
@@ -67,6 +77,9 @@ export async function map(node, webmapid) {
       MapView,
       Expand,
       FeatureLayer,
+      Portal,
+      LOD,
+      reactiveUtils,
       ...widgetArray
     ]) => {
       if (window.ARCGIS_TOKEN) {
@@ -166,14 +179,60 @@ export async function map(node, webmapid) {
           });
       }
 
-      map.load().then(() => {
+      // The basemap's own levels plus deeper ones (see MIN_SCALE), or null to
+      // leave the view's default alone: no tiled base layer means free zoom
+      // already, and a scheme that already reaches MIN_SCALE needs nothing.
+      // Never throws, so a basemap that fails to load can't take the map down.
+      const deeperLods = async (basemap) => {
+        try {
+          if (!basemap) return null;
+          await basemap.load();
+          const baseLayers = basemap.baseLayers.toArray();
+          await Promise.all(baseLayers.map((l) => l.load().catch(() => null)));
+          const tiled = baseLayers.find(
+            (l) => l.tileInfo && l.tileInfo.lods && l.tileInfo.lods.length
+          );
+          if (!tiled) return null;
+          const lods = tiled.tileInfo.lods.map((lod) => lod.clone());
+          let last = lods[lods.length - 1];
+          while (last.scale / 2 >= MIN_SCALE) {
+            last = new LOD({
+              level: last.level + 1,
+              scale: last.scale / 2,
+              resolution: last.resolution / 2,
+            });
+            lods.push(last);
+          }
+          return lods.length > tiled.tileInfo.lods.length ? lods : null;
+        } catch (error) {
+          console.warn("Could not extend basemap zoom levels", error);
+          return null;
+        }
+      };
+
+      map.load().then(async () => {
+        // Set before the view starts, so a startup zoom (the web map's
+        // viewpoint, or #zoom=26 in a shared link) isn't clamped to the tiles.
+        const lods = await deeperLods(map.basemap);
         view = new MapView({
           container: node,
           map: map,
+          ...(lods ? { constraints: { lods } } : {}),
           ui: {
             components: ["attribution"],
           },
         });
+
+        // A basemap picked in the gallery can have other levels or none.
+        reactiveUtils.watch(
+          () => view.map && view.map.basemap,
+          async (basemap) => {
+            const next = await deeperLods(basemap);
+            if (view.map && view.map.basemap === basemap) {
+              view.constraints.lods = next;
+            }
+          }
+        );
 
         const connector = document.getElementsByTagName(
           "geocam-viewer-arcgis-map"
